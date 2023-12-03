@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Arduino Data Display</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <!-- <script src="http://localhost/index.js"></script>
+  <script src="http://localhost/package-lock.json"></script>
+  <script src="http://localhost/node_modules"></script> -->
+</head>
+<body>
+  <h1>Arduino Data Display</h1>
+  <div id="dataDisplay">
+    <p>ID: <span id="id"></span></p>
+    <p>Name: <span id="name"></span></p>
+    <p>Temperature: <span id="temperature"></span>°C</p>
+    <p>Humidity: <span id="humidity"></span>%</p>
+    <p>Pressure: <span id="pressure"></span>Pa</p>
+    <p>Altitude: <span id="altitude"></span>meters</p>
+    <p>Sealevel Pressure: <span id="sealevelpressure"></span>Pa</p>
+    <p>Real Altitude: <span id="realaltitude"></span>meters</p>
+  </div>
+
+  
+  <script>
+    setTimeout(function() {
+      fetchData();
+    }, 1000);
+  
+    function fetchData() {
+      axios.get('/data')
+        .then((response) => {
+          const { id, name, temperature, humidity, pressure, altitude, sealevelpressure, realaltitude } = response.data[0];
+          document.getElementById('id').innerText = id;
+          document.getElementById('name').innerText = name;
+          document.getElementById('temperature').innerText = temperature;
+          document.getElementById('humidity').innerText = humidity;
+          document.getElementById('pressure').innerText = pressure;
+          document.getElementById('altitude').innerText = altitude;
+          document.getElementById('sealevelpressure').innerText = sealevelpressure;
+          document.getElementById('realaltitude').innerText = realaltitude;
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+    }
+  
+    setInterval(fetchData, 1000);
+  </script>
+</body>
+</html>
